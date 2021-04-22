@@ -6,12 +6,16 @@ pipeline{
     agent any
     stages{
         stage('Clone repository') {
+            steps{
         /* Cloning the Repository to our Workspace */
         checkout scm
+            }
     }
         stage('Build image') {
+            steps{
         /* This builds the actual image */
         dockerImage= docker.build registry
+            }
 	    }       
     //     stage('Test'){
     //         steps{
