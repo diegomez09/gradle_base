@@ -1,7 +1,7 @@
 pipeline{
     environment{
         registry = 'diegomezg/docker-gradle'
-        registryCredential= 'dockerhub'
+        registryCredential= 'DOCKER_CREDENTIALS'
     }
     agent any
     stages{
@@ -14,7 +14,7 @@ pipeline{
         stage('Build image') {
             steps{
         /* This builds the actual image */
-        dockerImage= docker.build registry
+        dockerImage= docker.build registry + "$BUILD_ID"
             }
 	    }       
     //     stage('Test'){
