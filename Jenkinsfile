@@ -1,51 +1,51 @@
 pipeline{
     environment{
-        registry = "diegomezg/docker-gradle"
-        registryCredential= "dockerhub"
+        registry = 'diegomezg/docker-gradle'
+        registryCredential= 'dockerhub'
     }
     agent any
     stages{
-        stage("Clone repository") {
+        stage('Clone repository') {
         /* Cloning the Repository to our Workspace */
         checkout scm
     }
-        stage("Build image") {
+        stage('Build image') {
         /* This builds the actual image */
         dockerImage= docker.build registry
 	    }       
-    //     stage("Test"){
+    //     stage('Test'){
     //         steps{
-    //             echo "========executing Test========"
+    //             echo '========executing Test========'
     //         }
     //         post{
     //             always{
-    //                 echo "========Test========"
-    //                 sh "./gradlew clean test --no-daemon"
+    //                 echo '========Test========'
+    //                 sh './gradlew clean test --no-daemon'
     //             }
     //             success{
-    //                 echo "========Test executed successfully========"
+    //                 echo '========Test executed successfully========'
     //             }
     //             failure{
-    //                 echo "========Test execution failed========"
+    //                 echo '========Test execution failed========'
     //             }
     //         }
     //     }
     // }
-    //     stage("Build"){
+    //     stage('Build'){
     //         post{
     //             always{
-    //                 echo "========Build========"
-    //                 sh "./gradlew build"
+    //                 echo '========Build========'
+    //                 sh './gradlew build'
     //             }
     //             success{
-    //                 echo "========pipeline executed successfully ========"
+    //                 echo '========pipeline executed successfully ========'
     //             }
     //             failure{
-    //                 echo "========pipeline execution failed========"
+    //                 echo '========pipeline execution failed========'
     //             }
     //         }
     // }
-        stage("Push image"){
+        stage('Push image'){
             steps{
                 script{
                     docker.withRegistry('',registryCredential){
