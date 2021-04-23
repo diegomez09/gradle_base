@@ -1,60 +1,29 @@
 pipeline{
     environment{
-        registry = 'diegomezg/docker-gradle'
-        registryCredential= 'DOCKER_CREDENTIALS'
+        registry = "diegomezg/gradle-docker"
+        dockerHubAccess = 'DOCKER_CREDENTIALS'
     }
     agent any
     stages{
-        stage('Clone repository') {
+        stage('Clone repository'){
             steps{
-        /* Cloning the Repository to our Workspace */
-        checkout scm
+                echo '=============== Cloning repository ==============='
+                checkout scm
             }
-    }
-        stage('Build image') {
-            steps{
-        /* This builds the actual image */
-        script{
-            dockerImage= docker.build registry
         }
-            }
-	    }       
-    //     stage('Test'){
-    //         steps{
-    //             echo '========executing Test========'
-    //         }
-    //         post{
-    //             always{
-    //                 echo '========Test========'
-    //                 sh './gradlew clean test --no-daemon'
-    //             }
-    //             success{
-    //                 echo '========Test executed successfully========'
-    //             }
-    //             failure{
-    //                 echo '========Test execution failed========'
-    //             }
-    //         }
-    //     }
-    // }
-    //     stage('Build'){
-    //         post{
-    //             always{
-    //                 echo '========Build========'
-    //                 sh './gradlew build'
-    //             }
-    //             success{
-    //                 echo '========pipeline executed successfully ========'
-    //             }
-    //             failure{
-    //                 echo '========pipeline execution failed========'
-    //             }
-    //         }
-    // }
-        stage('Push image'){
+        stage('Build image'){
             steps{
                 script{
-                    docker.withRegistry('',registryCredential){
+                    echo '================= Building image ================='
+                    dockerImage = docker.build registry
+                }
+            }
+        }
+        stage('Deploy image'){
+            steps{
+                script{
+                    echo '================= Deplying image ================='
+                    docker.withRegistry('', dockerHubAccess) {
                         dockerImage.push()
                     }
                 }
